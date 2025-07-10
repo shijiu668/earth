@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect } from 'react';
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
-import { useAuth } from '../../components/AuthProvider';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import { useAuth } from '../components/AuthProvider';
 
 // 这些 ID 来自您在 Paddle 仪表盘中创建的产品
 const PRO_MONTHLY_PRICE_ID = 'price_xxxxxxxxxxxxxx'; 

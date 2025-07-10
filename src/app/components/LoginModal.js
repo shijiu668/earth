@@ -3,7 +3,7 @@
 import { Auth } from '@supabase/auth-ui-react';
 // 修正了 ThemeSupa 的导入来源
 import { ThemeSupa } from '@supabase/auth-ui-react';
-import { supabase } from '../lib/supabaseClient';
+import { supabase } from '../../lib/supabaseClient';
 import { X } from 'lucide-react';
 
 export default function LoginModal({ onClose }) {
