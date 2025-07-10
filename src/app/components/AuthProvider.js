@@ -1,9 +1,8 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect } from 'react';
-import { supabase } from '../lib/supabaseClient';
-// 不再需要 useRouter
-// import { useRouter } from 'next/navigation';
+import { supabase } from '../../lib/supabaseClient';
+import { useRouter } from 'next/navigation';
 
 const AuthContext = createContext(null);
 
@@ -12,8 +11,7 @@ export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
-    // 不再需要 router
-    // const router = useRouter(); 
+    const router = useRouter();
 
     useEffect(() => {
         const getSession = async () => {
@@ -29,17 +27,36 @@ export function AuthProvider({ children }) {
             setSession(session);
             setUser(session?.user ?? null);
             setLoading(false);
-
-            // 移除这个判断逻辑
-            // if (event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
-            //   router.refresh();
-            // }
+            if (event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
+                router.refresh();
+            }
         });
 
         return () => {
             authListener.subscription.unsubscribe();
         };
-    }, []); // 从依赖项数组中移除 router
+    }, [router]);
+
+    useEffect(() => {
+        if (user) {
+            const fetchProfile = async () => {
+                const { data, error } = await supabase
+                    .from('profiles')
+                    .select('*')
+                    .eq('id', user.id)
+                    .single();
+
+                if (error) {
+                    console.error('Error fetching profile:', error);
+                } else {
+                    setProfile(data);
+                }
+            };
+            fetchProfile();
+        } else {
+            setProfile(null);
+        }
+    }, [user]);
 
     const value = {
         session,
