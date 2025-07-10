@@ -1,8 +1,8 @@
 'use client';
 
 import { Auth } from '@supabase/auth-ui-react';
-// 移除这一行，我们不再使用 ThemeSupa
-// import { ThemeSupa } from '@supabase/auth-ui-react'; 
+// 重新加回这一行
+import { ThemeSupa } from '@supabase/auth-ui-react';
 import { supabase } from '../../lib/supabaseClient';
 import { X } from 'lucide-react';
 
@@ -19,9 +19,9 @@ export default function LoginModal({ onClose }) {
                 <h2 className="text-2xl font-bold text-center mb-6 text-white">Login or Sign Up</h2>
                 <Auth
                     supabaseClient={supabase}
-                    // 移除 appearance 属性，直接使用内置主题
-                    // appearance={{ theme: ThemeSupa }}
-                    theme="dark" // 保留这一行，它会启用内置的深色主题
+                    // 重新加回 appearance 属性，以启用 Tailwind CSS 主题
+                    appearance={{ theme: ThemeSupa }}
+                    theme="dark"
                     providers={['google', 'github']}
                     socialLayout="horizontal"
                 />
