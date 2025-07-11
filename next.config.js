@@ -9,12 +9,12 @@ const nextConfig = {
     // 定义内容安全策略 (CSP)
     const cspHeader = `
       default-src 'self';
-      script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdn.paddle.com;
-      style-src 'self' 'unsafe-inline' https://cdn.paddle.com;
-      img-src 'self' blob: data: https://replicate.delivery https://*.paddle.com;
-      font-src 'self' data: https://fonts.gstatic.com https://at.alicdn.com https://cdn.paddle.com;
-      frame-src 'self' https://checkout.paddle.com;
-      connect-src 'self' https://*.supabase.co https://*.replicate.com https://*.paddle.com;
+      script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdn.paddle.com https://public.profitwell.com;
+      style-src 'self' 'unsafe-inline' https://cdn.paddle.com https://buy.paddle.com;
+      img-src 'self' blob: data: https://replicate.delivery https://*.paddle.com https://buy.paddle.com;
+      font-src 'self' data: https://fonts.gstatic.com https://at.alicdn.com https://cdn.paddle.com https://buy.paddle.com;
+      frame-src 'self' https://checkout.paddle.com https://buy.paddle.com;
+      connect-src 'self' https://*.supabase.co https://*.replicate.com https://*.paddle.com https://public.profitwell.com https://buy.paddle.com;
     `;
 
     return [
