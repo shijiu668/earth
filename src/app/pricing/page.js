@@ -47,23 +47,18 @@ export default function PricingPage() {
         const priceId = process.env.NEXT_PUBLIC_PADDLE_PRO_MONTHLY_PRICE_ID;
         console.log(`Testing checkout with Price ID: ${priceId}`);
 
-        // 🚀 **诊断日志和解决方案**
-        // 我们将所有要发送的数据组合成一个对象，以便清晰地记录和检查
         const checkoutData = {
             items: [{ priceId: priceId, quantity: 1 }],
             customer: { email: user.email },
-            // ✅ **核心修正**：确保 customData 是一个原生JavaScript对象，而不是JSON字符串
-            customData: {
-                user_id: user.id
-            }
+            // ✅ **测试环节**：暂时将 customData 这几行注释掉
+            // customData: {
+            //     user_id: user.id
+            // }
         };
 
-        // 在调用前打印最终数据结构
-        console.log('--- Opening Paddle Checkout with the following data: ---');
-        console.dir(checkoutData); // 使用 console.dir 方便查看对象结构
-        console.log('Type of customData:', typeof checkoutData.customData); // 验证 customData 类型
+        console.log('--- 为进行测试，已移除 customData 并打开 Paddle Checkout：---');
+        console.dir(checkoutData);
         console.log('----------------------------------------------------');
-
 
         window.Paddle.Checkout.open(checkoutData);
     };
