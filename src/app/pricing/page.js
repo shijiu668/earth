@@ -29,10 +29,10 @@ export default function PricingPage() {
             try {
                 console.log('4. Attempting to initialize Paddle v2...');
 
-                // 使用 Paddle v2 的正确初始化方式
+                // 使用正确的 Paddle v2 初始化参数
                 await window.Paddle.Initialize({
                     token: process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN,
-                    environment: 'sandbox', // 改为 'production' 当您准备上线时
+                    // 移除 environment 参数，因为它在新版本中不存在
                     eventCallback: function (data) {
                         console.log('Paddle event:', data);
                         if (data.name === 'checkout.completed') {
@@ -48,7 +48,7 @@ export default function PricingPage() {
 
             } catch (error) {
                 console.error('6. Error during initialization:', error);
-                alert('支付系统初始化失败，请联系客服支持');
+                alert('A critical error occurred with the payment system. Please contact support');
                 setIsLoading(false);
             }
 
@@ -61,11 +61,11 @@ export default function PricingPage() {
 
     const handleCheckout = () => {
         if (!user) {
-            alert('请先登录再进行订阅。');
+            alert('Please log in before subscribing.');
             return;
         }
         if (!paddle) {
-            alert('支付系统未就绪，请刷新页面重试。');
+            alert('Payment system is not ready. Please refresh.');
             return;
         }
 
@@ -85,7 +85,7 @@ export default function PricingPage() {
             });
         } catch (error) {
             console.error('Checkout error:', error);
-            alert('启动支付失败，请重试或联系客服。');
+            alert('Failed to start checkout. Please try again or contact support.');
         }
     };
 
@@ -97,7 +97,7 @@ export default function PricingPage() {
                 onError={(e) => {
                     console.error('CRITICAL: Failed to load Paddle script:', e);
                     setIsLoading(false);
-                    alert('支付系统加载失败，请检查网络连接。');
+                    alert('Payment system failed to load. Please check your network connection.');
                 }}
             />
             <main className="min-h-screen bg-black">
@@ -105,40 +105,40 @@ export default function PricingPage() {
                 <section className="section-padding">
                     <div className="container text-center">
                         <h1 className="text-4xl md:text-6xl font-bold mb-6 gradient-text">
-                            价格方案
+                            Pricing Plans
                         </h1>
                         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mt-12">
                             <div className="card border-blue-500">
-                                <h3 className="text-2xl font-semibold text-white mb-4">Pro 月付</h3>
+                                <h3 className="text-2xl font-semibold text-white mb-4">Pro Monthly</h3>
                                 <p className="text-5xl font-bold text-white mb-6">
-                                    $15 <span className="text-lg font-normal text-gray-400">/ 月</span>
+                                    $15 <span className="text-lg font-normal text-gray-400">/ month</span>
                                 </p>
                                 <ul className="text-gray-300 mb-6 space-y-2">
-                                    <li>• 150 积分/月</li>
-                                    <li>• 高质量视频生成</li>
-                                    <li>• 优先处理</li>
-                                    <li>• 邮件支持</li>
+                                    <li>• 150 credits per month</li>
+                                    <li>• High-quality video generation</li>
+                                    <li>• Priority processing</li>
+                                    <li>• Email support</li>
                                 </ul>
                                 <button
                                     onClick={handleCheckout}
                                     disabled={isLoading || !paddle}
                                     className="btn-primary w-full"
                                 >
-                                    {isLoading ? '初始化中...' : '立即订阅'}
+                                    {isLoading ? 'Initializing...' : 'Subscribe Now'}
                                 </button>
                             </div>
                             <div className="card">
-                                <h3 className="text-2xl font-semibold text-white mb-4">免费试用</h3>
+                                <h3 className="text-2xl font-semibold text-white mb-4">Free Trial</h3>
                                 <p className="text-5xl font-bold text-white mb-6">
-                                    $0 <span className="text-lg font-normal text-gray-400">/ 月</span>
+                                    $0 <span className="text-lg font-normal text-gray-400">/ month</span>
                                 </p>
                                 <ul className="text-gray-300 mb-6 space-y-2">
-                                    <li>• 10 积分/月</li>
-                                    <li>• 标准质量</li>
-                                    <li>• 社区支持</li>
+                                    <li>• 10 credits per month</li>
+                                    <li>• Standard quality</li>
+                                    <li>• Community support</li>
                                 </ul>
                                 <button className="btn-secondary w-full" disabled>
-                                    当前方案
+                                    Current Plan
                                 </button>
                             </div>
                         </div>
