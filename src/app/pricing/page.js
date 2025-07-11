@@ -48,12 +48,18 @@ export default function PricingPage() {
         console.log(`Testing checkout with Price ID: ${priceId}`);
 
         const checkoutData = {
-            items: [{ priceId: priceId, quantity: 1 }],
-            customer: { email: user.email },
-            // ✅ **测试环节**：暂时将 customData 这几行注释掉
-            // customData: {
-            //     user_id: user.id
-            // }
+            // ✅ 在 settings 对象中添加 successUrl
+            settings: {
+                successUrl: 'https://aiearthzoomout.org/payment-success', // 您希望支付成功后跳转的页面
+                theme: 'light', // 您可以保留或添加其他设置
+            },
+            items: [{
+                priceId: process.env.NEXT_PUBLIC_PADDLE_PRO_MONTHLY_PRICE_ID,
+                quantity: 1
+            }],
+            customer: {
+                email: user.email
+            },
         };
 
         console.log('--- 为进行测试，已移除 customData 并打开 Paddle Checkout：---');
