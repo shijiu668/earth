@@ -5,7 +5,7 @@ import { AuthProvider } from './components/AuthProvider';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: 'AI Earth Zoom Out - Create Stunning Earth Zoom Out Videos',
+  title: 'Earth Zoom Out - Create Stunning AI Earth Zoom Out Videos',
   description: 'Generate breathtaking earth zoom out videos with AI. Upload any image and watch it transform into an epic earth zoom out sequence. Create professional-quality videos in seconds.',
   keywords: 'earth zoom out, ai earth zoom out, video generation, ai video, zoom out effect, earth video, space video, aerial video, satellite view',
   authors: [{ name: 'AI Earth Zoom Out' }],
@@ -15,7 +15,7 @@ export const metadata = {
   openGraph: {
     title: 'AI Earth Zoom Out - Create Stunning Earth Zoom Out Videos',
     description: 'Generate breathtaking earth zoom out videos with AI. Upload any image and watch it transform into an epic earth zoom out sequence.',
-    url: 'https://ai-earth-zoom-out.vercel.app',
+    url: 'https://aiearthzoomout.org',
     siteName: 'AI Earth Zoom Out',
     images: [
       {
@@ -35,7 +35,7 @@ export const metadata = {
     images: ['/og-image.jpg'],
   },
   alternates: {
-    canonical: 'https://ai-earth-zoom-out.vercel.app',
+    canonical: 'https://aiearthzoomout.org',
   },
 };
 
