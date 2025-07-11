@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { supabase } from '../../lib/supabaseClient';
 import { useRouter } from 'next/navigation';
 
@@ -12,6 +12,13 @@ export function AuthProvider({ children }) {
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
     const router = useRouter();
+
+    const updateProfile = useCallback((newProfileData) => {
+        setProfile(prevProfile => ({
+            ...prevProfile,
+            ...newProfileData,
+        }));
+    }, []);
 
     useEffect(() => {
         const getSession = async () => {
@@ -64,6 +71,7 @@ export function AuthProvider({ children }) {
         profile,
         loading,
         signOut: () => supabase.auth.signOut(),
+        updateProfile,
     };
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

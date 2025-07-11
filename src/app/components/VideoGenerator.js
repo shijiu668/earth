@@ -16,7 +16,7 @@ export default function VideoGenerator() {
     const [previewVideoAspectRatio, setPreviewVideoAspectRatio] = useState('1:1');
     const fileInputRef = useRef(null);
     const previewVideoRef = useRef(null);
-    const { user, profile } = useAuth();
+    const { user, profile, updateProfile } = useAuth();
     // 添加这个函数
     const calculateAspectRatio = (width, height) => {
         const ratio = width / height;
@@ -125,6 +125,8 @@ export default function VideoGenerator() {
         }
     };
 
+    // components/VideoGenerator.js
+
     const handleGenerate = async () => {
         if (!selectedImage) return;
         if (!user) {
@@ -136,15 +138,17 @@ export default function VideoGenerator() {
             return;
         }
 
+        // 核心修改：在这里立即更新前端状态
+        const newCredits = profile.credits - VIDEO_GENERATION_COST;
+        updateProfile({ credits: newCredits });
+
         setIsGenerating(true);
         setGeneratedVideo(null);
 
         try {
             const response = await fetch('/api/generate-video', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     image: selectedImage,
                     duration: selectedDuration,
@@ -154,17 +158,19 @@ export default function VideoGenerator() {
 
             if (!response.ok) {
                 const errorData = await response.json();
+                // 如果后端出错，把积分还给用户
+                updateProfile({ credits: profile.credits });
                 throw new Error(errorData.error || 'Failed to generate video');
             }
 
             const data = await response.json();
             setGeneratedVideo(data.videoUrl);
 
-            // 重要：前端仅用于显示，实际积分扣除在后端完成
-            // 可以在此处触发 profile 的重新获取以更新积分显示
         } catch (error) {
             console.error('Error generating video:', error);
             alert(`Failed to generate video: ${error.message}`);
+            // 如果捕获到任何错误，也把积分还给用户
+            updateProfile({ credits: profile.credits });
         } finally {
             setIsGenerating(false);
         }
@@ -293,8 +299,8 @@ export default function VideoGenerator() {
                             onClick={handleGenerate}
                             disabled={!canGenerate}
                             className={`w-full py-4 px-8 rounded-xl font-semibold text-lg transition-all ${!canGenerate
-                                    ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
-                                    : 'btn-primary'
+                                ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
+                                : 'btn-primary'
                                 }`}
                         >
                             {isGenerating ? (
