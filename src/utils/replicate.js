@@ -5,13 +5,12 @@ const replicate = new Replicate({
 });
 
 export async function generateEarthZoomOutVideo(imageData, duration = 5, aspectRatio = '16:9') {
-    const prompt = `Movie-level extremely fast image reduction, presented in stages, maintain smooth fluid camera movement throughout, no jump cuts, seamless scale transitions:
-Stage 1: Quickly zoom out to a bird's-eye view and expand the surroundings to match the uploaded image.
-Stage 2: The environment is shrinking faster and faster, and expanding to an infinite distance around it.
-Stage 3: The perspective is quickly raised to the map perspective, showing the details of the map, and the original scene no longer exists.
-Stage 4: The perspective is quickly raised to the atmospheric perspective, passing through the looming clouds.
-Stage 5: The viewing angle is quickly zoomed out to show the curvature of the Earth.
-Stage 6: Finally ending with complete Earth planet alone in space.`;
+    const prompt = `Cinematic light-speed continuous zoom out, presented in stages, maintain smooth fluid camera movement throughout, no jump cuts, seamless scale transitions. During the zoom out process, the proportions between the original scene and expanded scenes must be realistic and true to life. The relative positions and proportions of characters and environment must remain unchanged throughout the process:
+Stage 1: Quickly zoom out to a bird's-eye view, and expand the surrounding environment based on the image.
+Stage 2: Zoom out at an increasingly faster pace, and infinitely expand the image outward in all directions, expanding to reveal entire city scenes or vast forest landscapes or mountain range vistas or coastal environments, with the original scene completely invisible.
+Stage 3: Zoom out at maximum speed continuously, with the original scene completely invisible, now able to see the ground map as it appears from a satellite view looking down, revealing the Americas.
+Stage 4: Zoom out at maximum speed continuously, showing clouds being passed through during the process, revealing cloud layers and passing through them, now able to see the outline of Earth.
+Stage 5: Finally ending with complete Earth planet alone in space.`;
 
     try {
         const input = {
