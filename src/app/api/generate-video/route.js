@@ -6,7 +6,7 @@ import { generateEarthZoomOutVideo } from '../../../utils/replicate';
 const VIDEO_GENERATION_COST = 10;
 
 export async function POST(request) {
-    const supabase = createRouteHandlerClient({ cookies });
+    const supabase = createRouteHandlerClient({ cookies: () => cookies() });
 
     try {
         const { data: { user } } = await supabase.auth.getUser();
