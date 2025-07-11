@@ -1,85 +1,92 @@
 // app/pricing/page.js
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Script from 'next/script';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { useAuth } from '../components/AuthProvider';
 
-// 这些是 Paddle Billing 的测试价格 ID。
-// 请登录您的 Paddle 后台 -> Catalog -> Products -> (选择您的产品) -> Prices 来获取您自己的 Price ID。
+// 再次确认这些是您 Paddle 沙箱环境中的 Pro Plan 的价格 ID
 const monthlyPlanPriceId = 'pri_01jzxkebrjbf4m25kmsq8wpgch'; // 示例 Pro Monthly 价格 ID
 const yearlyPlanPriceId = 'pri_01jzxkf131zhfqhhgqj13kxxp5';  // 示例 Pro Yearly 价格 ID
 
 export default function PricingPage() {
     const [paddle, setPaddle] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const { user } = useAuth(); // 获取登录用户
+    const [isLoading, setIsLoading] = useState(true); // 初始时按钮应为加载状态
+    const { user } = useAuth();
 
-    // 1. Paddle.js 脚本加载成功后，初始化 Paddle
-    useEffect(() => {
+    // 1. 定义一个函数，在 Paddle.js 脚本加载完成后执行
+    const handlePaddleLoad = () => {
+        console.log('Paddle.js script loaded successfully.');
+        // 检查 Paddle 是否已在 window 对象上
         if (window.Paddle) {
             window.Paddle.Initialize({
-                token: process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN, // 使用客户端专用的 Token
-                environment: 'sandbox', // 使用沙箱环境进行测试
+                token: process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN,
+                environment: 'sandbox',
                 eventCallback: (data) => {
-                    // 监听支付成功事件
+                    console.log('Paddle event:', data); // 记录所有 Paddle 事件
                     if (data.name === 'checkout.completed') {
-                        // 支付成功后，我们的后端 webhook 会处理积分更新
-                        // 这里可以重定向到感谢页面或刷新页面
-                        console.log('Checkout completed!');
+                        console.log('Checkout completed! Redirecting...');
                         alert('Subscription successful! Your credits will be updated shortly.');
-                        window.location.href = '/'; // 返回首页
+                        window.location.href = '/';
+                    }
+                    if (data.name === 'checkout.closed') {
+                        console.log('Checkout modal closed.');
+                        setIsLoading(false); // 用户关闭弹窗后，重置按钮状态
                     }
                 }
             }).then(p => {
                 if (p) {
-                    setPaddle(p);
+                    console.log('Paddle initialized successfully.');
+                    setPaddle(p); // 保存 paddle 实例
+                    setIsLoading(false); // 初始化成功，按钮变为可用
                 }
             }).catch(err => {
-                console.error("Failed to initialize Paddle:", err);
+                console.error('Failed to initialize Paddle:', err);
+                alert('Could not initialize payment system. Please refresh the page.');
+                setIsLoading(false);
             });
+        } else {
+            console.error('window.Paddle is not available after script load.');
         }
-    }, []);
+    };
 
     // 2. 处理订阅点击事件
     const handleCheckout = (priceId) => {
+        console.log('handleCheckout called with priceId:', priceId);
         if (!user) {
             alert('Please log in before subscribing.');
             return;
         }
-        if (paddle) {
-            setIsLoading(true);
-            paddle.Checkout.open({
-                items: [{
-                    priceId: priceId,
-                    quantity: 1
-                }],
-                customer: {
-                    email: user.email // 预填入用户邮箱
-                },
-                customData: {
-                    user_id: user.id // !! 关键：将Supabase用户ID传递给Paddle，用于webhook
-                }
-            });
-            setIsLoading(false);
-        } else {
-            console.error('Paddle is not initialized yet.');
-            alert('Payment system is not ready. Please try again in a moment.');
+        if (!paddle) {
+            console.error('Paddle is not initialized. Cannot open checkout.');
+            alert('Payment system is not ready. Please wait or refresh the page.');
+            return;
         }
+
+        setIsLoading(true); // 点击后显示加载状态
+        paddle.Checkout.open({
+            items: [{
+                priceId: priceId,
+                quantity: 1
+            }],
+            customer: {
+                email: user.email
+            },
+            customData: {
+                user_id: user.id
+            }
+        });
     };
 
     return (
         <>
-            {/* 关键：加载新版 Paddle.js 脚本 */}
+            {/* 关键：加载新版 Paddle.js 脚本，并在加载完成后调用 handlePaddleLoad */}
             <Script
                 src="https://cdn.paddle.com/paddle/paddle.js"
-                onLoad={() => {
-                    // 脚本加载后手动触发一次 useEffect
-                    const event = new Event('load');
-                    window.dispatchEvent(event);
-                }}
+                onLoad={handlePaddleLoad}
+                onError={(e) => console.error('Failed to load Paddle script:', e)}
             />
             <main className="min-h-screen bg-black">
                 <Header />
@@ -104,7 +111,7 @@ export default function PricingPage() {
                                     <li>✓ Standard Support</li>
                                 </ul>
                                 <button onClick={() => handleCheckout(monthlyPlanPriceId)} disabled={isLoading || !paddle} className="btn-primary w-full">
-                                    {isLoading ? 'Loading...' : 'Subscribe Now'}
+                                    {isLoading ? 'Initializing...' : 'Subscribe Now'}
                                 </button>
                             </div>
 
@@ -119,7 +126,7 @@ export default function PricingPage() {
                                     <li>✓ Priority Support</li>
                                 </ul>
                                 <button onClick={() => handleCheckout(yearlyPlanPriceId)} disabled={isLoading || !paddle} className="btn-primary w-full">
-                                    {isLoading ? 'Loading...' : 'Subscribe Now'}
+                                    {isLoading ? 'Initializing...' : 'Subscribe Now'}
                                 </button>
                             </div>
                         </div>
