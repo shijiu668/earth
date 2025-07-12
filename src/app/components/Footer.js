@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="bg-gray-900 border-t border-gray-800">
       <div className="container section-padding">
         <div className="grid md:grid-cols-4 gap-8 mb-12">
-          
+
           {/* Brand Section */}
           <div className="md:col-span-2">
             <div className="flex items-center space-x-2 mb-6">
@@ -15,8 +15,8 @@ export default function Footer() {
               </span>
             </div>
             <p className="text-gray-400 mb-6 leading-relaxed">
-              Create stunning earth zoom out videos with artificial intelligence. 
-              Transform any image into a breathtaking cinematic sequence that reveals 
+              Create stunning earth zoom out videos with artificial intelligence.
+              Transform any image into a breathtaking cinematic sequence that reveals
               the beauty of our planet from space.
             </p>
             <div className="flex space-x-4">
@@ -54,11 +54,6 @@ export default function Footer() {
                   About Earth Zoom Out
                 </a>
               </li>
-              <li>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                  API Documentation
-                </a>
-              </li>
             </ul>
           </div>
 
@@ -68,22 +63,22 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                  Help Center3
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">
                   Contact Us
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <a href="/privacy" className="text-gray-400 hover:text-white transition-colors">
                   Privacy Policy
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <a href="/terms" className="text-gray-400 hover:text-white transition-colors">
                   Terms of Service
+                </a>
+              </li>
+              <li>
+                <a href="/refund" className="text-gray-400 hover:text-white transition-colors">
+                  Refund Policy
                 </a>
               </li>
             </ul>
