@@ -1,20 +1,23 @@
-// next.config.js
+// next.config.js (FINAL MERGED VERSION)
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // 我们保留您已有的 images 配置
   images: {
     domains: ['replicate.delivery'],
   },
+
   async headers() {
-    // 定义内容安全策略 (CSP)
+    // --- 我们将更新您的内容安全策略 ---
     const cspHeader = `
       default-src 'self';
-      script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdn.paddle.com https://public.profitwell.com;
-      style-src 'self' 'unsafe-inline' https://cdn.paddle.com https://buy.paddle.com;
-      img-src 'self' blob: data: https://replicate.delivery https://*.paddle.com https://buy.paddle.com;
-      font-src 'self' data: https://fonts.gstatic.com https://at.alicdn.com https://cdn.paddle.com https://buy.paddle.com;
-      frame-src 'self' https://checkout.paddle.com https://buy.paddle.com;
-      connect-src 'self' https://*.supabase.co https://*.replicate.com https://*.paddle.com https://public.profitwell.com https://buy.paddle.com;
+      script-src 'self' 'unsafe-eval' 'unsafe-inline' https://*.stripe.com;
+      style-src 'self' 'unsafe-inline';
+      img-src 'self' blob: data: https://replicate.delivery https://*.stripe.com;
+      media-src 'self' https://replicate.delivery;
+      font-src 'self' https://fonts.gstatic.com;
+      frame-src 'self' https://*.stripe.com;
+      connect-src 'self' https://*.supabase.co https://*.replicate.com https://*.stripe.com;
     `;
 
     return [
@@ -23,8 +26,9 @@ const nextConfig = {
         headers: [
           {
             key: 'Content-Security-Policy',
-            value: cspHeader.replace(/\s{2,}/g, ' ').trim(), // 移除换行符和多余空格
+            value: cspHeader.replace(/\s{2,}/g, ' ').trim(),
           },
+          // 保留您已有的其他安全头
           {
             key: 'X-Content-Type-Options',
             value: 'nosniff',
