@@ -186,7 +186,6 @@ export default function VideoGenerator() {
             window.location.href = downloadUrl;
         }
     };
-    const canGenerate = selectedImage && !isGenerating && user && profile && profile.credits >= VIDEO_GENERATION_COST;
     return (
         <section id="generator" className="section-padding bg-gray-950">
             <div className="container">
@@ -280,7 +279,7 @@ export default function VideoGenerator() {
                         {/* Generate Button */}
                         <button
                             onClick={handleGenerate}
-                            disabled={!canGenerate}
+                            disabled={!selectedImage || isGenerating || !user}
                             className={`w-full py-4 px-8 rounded-xl font-semibold text-lg transition-all ${!canGenerate
                                 ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
                                 : 'btn-primary'
@@ -295,10 +294,6 @@ export default function VideoGenerator() {
                                 `Create Video (Cost: ${VIDEO_GENERATION_COST} Credits)`
                             )}
                         </button>
-                        {!user && <p className="text-center text-yellow-400 mt-4">Please log in to create a video.</p>}
-                        {user && profile && profile.credits < VIDEO_GENERATION_COST && (
-                            <p className="text-center text-red-400 mt-4">You don't have enough credits.</p>
-                        )}
                     </div>
 
                     {/* Right Side - Video Display */}
