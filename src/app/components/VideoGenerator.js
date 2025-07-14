@@ -186,7 +186,7 @@ export default function VideoGenerator() {
             window.location.href = downloadUrl;
         }
     };
-    const canGenerate = selectedImage && !isGenerating && user;
+    const canGenerate = selectedImage && !isGenerating && user && profile && profile.credits >= VIDEO_GENERATION_COST;
     return (
         <section id="generator" className="section-padding bg-gray-950">
             <div className="container">

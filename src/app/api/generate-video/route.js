@@ -58,7 +58,6 @@ export async function POST(request) {
             .single();
 
         if (profileError || !profile) throw new Error('Could not find user profile.');
-        if (profile.credits < VIDEO_GENERATION_COST) return NextResponse.json({ error: 'Insufficient credits' }, { status: 402 });
 
         const newCredits = profile.credits - VIDEO_GENERATION_COST;
         const { error: updateError } = await supabase.from('profiles').update({ credits: newCredits }).eq('id', user.id);
