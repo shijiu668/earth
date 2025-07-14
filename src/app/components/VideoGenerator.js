@@ -176,31 +176,14 @@ export default function VideoGenerator() {
         }
     };
 
-    const handleDownload = async () => {
+    const handleDownload = () => {
         if (generatedVideo) {
-            try {
-                const response = await fetch(generatedVideo);
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = `earth-zoom-out-video-${Date.now()}.mp4`;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                window.URL.revokeObjectURL(url);
-            } catch (error) {
-                console.error('Download failed:', error);
-                // 如果fetch失败，回退到原方法
-                const link = document.createElement('a');
-                link.href = generatedVideo;
-                link.download = `earth-zoom-out-video-${Date.now()}.mp4`;
-                link.target = '_blank';
-                link.rel = 'noopener noreferrer';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }
+            // 创建指向我们自己服务器的下载链接
+            const downloadUrl = `/api/download-video?videoUrl=${encodeURIComponent(
+                generatedVideo
+            )}`;
+            // 直接让浏览器导航到这个链接，服务器会强制下载
+            window.location.href = downloadUrl;
         }
     };
     const canGenerate = selectedImage && !isGenerating && user && profile && profile.credits >= VIDEO_GENERATION_COST;
@@ -344,6 +327,10 @@ export default function VideoGenerator() {
                                         <video
                                             src={generatedVideo}
                                             controls
+                                            autoPlay  // <-- 新增：自动播放
+                                            loop      // <-- 新增：循环播放
+                                            muted     // <-- 新增：静音播放（很多浏览器要求静音才能自动播放）
+                                            playsInline // <-- 新增：在移动设备上内联播放
                                             className="w-full h-full"
                                             poster="/preview-poster.jpg"
                                         />
