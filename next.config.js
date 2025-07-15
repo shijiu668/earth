@@ -13,7 +13,7 @@ const nextConfig = {
       default-src 'self';
       script-src 'self' 'unsafe-eval' 'unsafe-inline' https://*.stripe.com;
       style-src 'self' 'unsafe-inline';
-      img-src 'self' blob: data: https://replicate.delivery https://*.stripe.com;
+      img-src 'self' blob: data: https://replicate.delivery https://*.stripe.com https://magicbox.tools;
       media-src 'self' https://replicate.delivery;
       font-src 'self' https://fonts.gstatic.com;
       frame-src 'self' https://*.stripe.com;
