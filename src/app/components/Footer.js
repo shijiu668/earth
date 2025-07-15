@@ -86,17 +86,17 @@ export default function Footer() {
         </div>
 
         {/* Bottom Section */}
-        <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row items-center justify-between">
-          <p className="text-gray-400 text-center md:text-left mb-4 md:mb-0">
-            © 2025 AI Earth Zoom Out. All rights reserved. Create stunning earth zoom out videos with AI.
+        {/* Bottom Section (Final) */}
+        <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-8">
+          {/* Left Side: Copyright notice */}
+          <p className="text-gray-400 text-sm text-center md:text-left mb-4 md:mb-0">
+            © 2025 AI Earth Zoom Out. All rights reserved.
           </p>
-          <div className="flex items-center space-x-6 text-sm text-gray-400">
-            <span>Powered by Advanced AI</span>
-            <span>•</span>
-            <span>Professional Quality</span>
-            <span>•</span>
-            <span>Instant Generation</span>
-          </div>
+
+          {/* Right Side: Friendly link moved here */}
+          <a href="https://magicbox.tools" target="_blank" rel="noopener noreferrer" className="flex items-center">
+            <img src="https://magicbox.tools/badge.svg" alt="Featured on MagicBox.tools" className="h-auto w-auto max-h-6 opacity-70 hover:opacity-100 transition-opacity" />
+          </a>
         </div>
       </div>
     </footer>
