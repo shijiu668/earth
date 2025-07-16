@@ -25,12 +25,6 @@ export default function Header() {
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
-              <a href="#generator" className="text-gray-300 hover:text-white transition-colors duration-200">
-                Generator
-              </a>
-              <a href="#showcase" className="text-gray-300 hover:text-white transition-colors duration-200">
-                Showcase
-              </a>
               <a href="/pricing" className="text-gray-300 hover:text-white transition-colors duration-200">
                 Pricing
               </a>

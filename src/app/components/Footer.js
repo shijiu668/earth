@@ -40,17 +40,12 @@ export default function Footer() {
             <h3 className="text-white font-semibold mb-6">Quick Links</h3>
             <ul className="space-y-3">
               <li>
-                <a href="#generator" className="text-gray-400 hover:text-white transition-colors">
+                <a href="/" className="text-gray-400 hover:text-white transition-colors">
                   Video Generator
                 </a>
               </li>
               <li>
-                <a href="#showcase" className="text-gray-400 hover:text-white transition-colors">
-                  Video Showcase
-                </a>
-              </li>
-              <li>
-                <a href="#about" className="text-gray-400 hover:text-white transition-colors">
+                <a href="/about" className="text-gray-400 hover:text-white transition-colors">
                   About Earth Zoom Out
                 </a>
               </li>
