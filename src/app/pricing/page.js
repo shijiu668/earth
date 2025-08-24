@@ -109,7 +109,7 @@ export default function PricingPage() {
                     {/* 订阅状态提示 */}
                     {user && currentPlan && currentPlan !== 'free' && (
                         <div className="max-w-4xl mx-auto mt-8">
-                            {isSubscriptionCancelling ? (
+                            {isSubscriptionCancelled ? (
                                 <div className="bg-yellow-900/20 border border-yellow-500 rounded-lg p-4 flex items-center">
                                     <AlertTriangle className="h-5 w-5 text-yellow-500 mr-3 flex-shrink-0" />
                                     <div className="text-yellow-200">
@@ -143,7 +143,7 @@ export default function PricingPage() {
                         {plans.map((plan) => {
                             const isCurrentPlan = currentPlan === plan.name.toLowerCase();
                             // Pro 用户不能订阅 Basic 计划
-                            const isDisabled = isLoading || isCurrentPlan || (currentPlan === 'pro' && plan.name === 'Basic') || isSubscriptionCancelling;
+                            const isDisabled = isLoading || isCurrentPlan || (currentPlan === 'pro' && plan.name === 'Basic') || isSubscriptionCancelled;
 
                             return (
                                 <div key={plan.name} className={`card ${plan.isPopular ? 'border-2 border-blue-500 shadow-blue-500/20' : ''}`}>
