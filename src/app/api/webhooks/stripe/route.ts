@@ -108,6 +108,21 @@ export async function POST(req: Request) {
                 console.log(`✅ Subscription status for customer ${customerId} updated to ${subscription.status}.`);
                 break;
             }
+            case 'customer.subscription.deleted': {
+                const subscription = event.data.object as Stripe.Subscription;
+                const customerId = subscription.customer as string;
+
+                await supabaseAdmin
+                    .from('profiles')
+                    .update({
+                        stripe_subscription_status: 'cancelled',
+                        subscription_plan: 'free'
+                    })
+                    .eq('stripe_customer_id', customerId);
+
+                console.log(`✅ Subscription deleted for customer ${customerId}. Plan reset to free.`);
+                break;
+            }
         }
     } catch (error) {
         console.error('❌ Webhook handler failed:', { error });
