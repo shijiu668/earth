@@ -14,7 +14,7 @@ export default function PricingPage() {
     // 新增：判断用户的当前计划
     const currentPlan = profile?.subscription_plan;
     const subscriptionStatus = profile?.stripe_subscription_status;
-    const isSubscriptionCancelling = subscriptionStatus === 'cancel_at_period_end';
+    const isSubscriptionCancelled = subscriptionStatus === 'cancelled';
     const handleCheckout = async (priceId) => {
         if (!user) {
             alert('Please log in or sign up to subscribe.');
@@ -60,9 +60,12 @@ export default function PricingPage() {
             const data = await response.json();
 
             // 更新本地状态
-            updateProfile({ stripe_subscription_status: 'cancel_at_period_end' });
+            updateProfile({
+                stripe_subscription_status: 'cancelled',
+                subscription_plan: 'free'
+            });
 
-            alert('Your subscription has been cancelled. You can continue using your remaining credits until the end of the current billing period.');
+            alert('Your subscription has been cancelled immediately.');
             setShowCancelModal(false);
 
         } catch (error) {

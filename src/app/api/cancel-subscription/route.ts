@@ -32,19 +32,16 @@ export async function POST(req: Request) {
             return new NextResponse(JSON.stringify({ error: 'No active subscription found' }), { status: 400 });
         }
 
-        // 取消Stripe订阅（在当前计费周期结束时）
-        const subscription = await stripe.subscriptions.update(
-            profile.stripe_subscription_id,
-            {
-                cancel_at_period_end: true,
-            }
+        const subscription = await stripe.subscriptions.cancel(
+            profile.stripe_subscription_id
         );
 
         // 更新数据库中的订阅状态
         const { error: updateError } = await supabase
             .from('profiles')
             .update({
-                stripe_subscription_status: 'cancel_at_period_end'
+                stripe_subscription_status: 'cancelled',
+                subscription_plan: 'free'
             })
             .eq('id', user.id);
 
@@ -57,7 +54,7 @@ export async function POST(req: Request) {
 
         return NextResponse.json({
             success: true,
-            message: 'Subscription will be cancelled at the end of the current billing period.'
+            message: 'Subscription has been cancelled immediately.'
         });
 
     } catch (error) {
